@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Conti.API\Conti.API.csproj" />
+    <ProjectReference Include="..\Conti.Servicios\Conti.Servicios.csproj" />
+    <ProjectReference Include="..\ContiLuca.DTOs\Conti.DTOs.csproj" />
+    <ProjectReference Include="..\ContiLuca\Conti.ModeloDominio.csproj" />
+  </ItemGroup>
+
+</Project>

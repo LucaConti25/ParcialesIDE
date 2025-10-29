@@ -92,7 +92,7 @@ namespace Conti.API
         {
             try
             {
-                HttpResponseMessage response = await client.PutAsJsonAsync($"multas/{multa.Id}", multa);
+                HttpResponseMessage response = await client.PutAsJsonAsync($"multas/{multa.ID}", multa);
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();

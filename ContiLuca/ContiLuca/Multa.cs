@@ -10,6 +10,7 @@ namespace Conti.ModeloDominio
         public string Tipo { get; private set; }
         public string Estado { get; private set; }
 
+        public Multa() { }
         public Multa(int id, string patente, DateOnly fecha, decimal monto, string tipo, string estado)
         {
             SetPatente(patente);

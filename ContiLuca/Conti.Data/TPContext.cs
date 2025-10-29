@@ -33,6 +33,7 @@ namespace Conti.Data
             modelBuilder.Entity<Multa>(entity =>
             {
                 entity.HasKey(e => e.ID);
+                entity.Property(e => e.ID).ValueGeneratedOnAdd();
                 entity.Property(e => e.Patente).IsRequired().HasMaxLength(500);
                 entity.Property(e => e.Monto).IsRequired().HasPrecision(18,2);
                 entity.Property(e => e.Fecha).IsRequired();

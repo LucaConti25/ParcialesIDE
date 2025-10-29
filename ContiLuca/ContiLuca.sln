@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conti.WebApi", "Conti.WebAp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conti.Servicios", "Conti.Servicios\Conti.Servicios.csproj", "{81860C6F-4DA2-41E6-AEA8-B184912A4057}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsForms", "WindowsForms\WindowsForms.csproj", "{5E544E16-76EC-45BD-92C3-1EE4E7767F24}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conti.WindowsForms", "Conti.WindowsForms\Conti.WindowsForms.csproj", "{FA6FA462-6E89-4BBB-BFA7-2822E8422661}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,10 +47,10 @@ Global
 		{81860C6F-4DA2-41E6-AEA8-B184912A4057}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81860C6F-4DA2-41E6-AEA8-B184912A4057}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{81860C6F-4DA2-41E6-AEA8-B184912A4057}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5E544E16-76EC-45BD-92C3-1EE4E7767F24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5E544E16-76EC-45BD-92C3-1EE4E7767F24}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5E544E16-76EC-45BD-92C3-1EE4E7767F24}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5E544E16-76EC-45BD-92C3-1EE4E7767F24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA6FA462-6E89-4BBB-BFA7-2822E8422661}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA6FA462-6E89-4BBB-BFA7-2822E8422661}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA6FA462-6E89-4BBB-BFA7-2822E8422661}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA6FA462-6E89-4BBB-BFA7-2822E8422661}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
