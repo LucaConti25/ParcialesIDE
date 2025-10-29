@@ -1,19 +1,13 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.18" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Conti.Data\Conti.Data.csproj" />
-    <ProjectReference Include="..\Conti.Servicios\Conti.Servicios.csproj" />
     <ProjectReference Include="..\ContiLuca.DTOs\Conti.DTOs.csproj" />
     <ProjectReference Include="..\ContiLuca\Conti.ModeloDominio.csproj" />
   </ItemGroup>

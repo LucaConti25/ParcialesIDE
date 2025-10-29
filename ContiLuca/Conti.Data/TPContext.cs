@@ -26,6 +26,20 @@ namespace Conti.Data
             }
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Multa>(entity =>
+            {
+                entity.HasKey(e => e.ID);
+                entity.Property(e => e.Patente).IsRequired().HasMaxLength(500);
+                entity.Property(e => e.Monto).IsRequired().HasPrecision(18,2);
+                entity.Property(e => e.Fecha).IsRequired();
+                entity.Property(e => e.Estado).IsRequired().HasMaxLength(100);
+            });
+        }
+
     }
 
    
