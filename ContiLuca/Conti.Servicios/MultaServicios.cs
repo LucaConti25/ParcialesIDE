@@ -9,7 +9,7 @@ namespace Conti.Servicios
         public MultaDTO Add(MultaDTO multaDTO)
         {
             var multaRepository = new MultaRepository();
-            Multa multa = new Multa(0, multaDTO.Patente, multaDTO.Fecha, multaDTO.Monto, multaDTO.Tipo, multaDTO.Estado);
+            Multa multa = new Multa(0, multaDTO.Patente, multaDTO.Fecha, multaDTO.Monto, multaDTO.Tipo,"Pendiente");
             multaRepository.Add(multa); 
             multaDTO.ID = multa.ID;
             return multaDTO;
@@ -60,6 +60,21 @@ namespace Conti.Servicios
             var multaRepository = new MultaRepository();
             Multa multa = new Multa(multaDTO.ID, multaDTO.Patente, multaDTO.Fecha, multaDTO.Monto, multaDTO.Tipo, multaDTO.Estado);
             return multaRepository.Update(multa);
+        }
+
+        public IEnumerable<MultaDTO> GetByEstado(string estado)
+        {
+            var multaRepository = new MultaRepository();
+            var multas = multaRepository.GetByEstado(estado);
+            return multas.Select(multa => new MultaDTO
+            {
+                ID = multa.ID,
+                Patente = multa.Patente,
+                Fecha = multa.Fecha,
+                Monto = multa.Monto,
+                Tipo = multa.Tipo,
+                Estado = multa.Estado
+            }).ToList();
         }
     }
 }

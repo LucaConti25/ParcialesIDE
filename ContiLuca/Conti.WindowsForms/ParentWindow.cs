@@ -31,14 +31,14 @@ namespace Conti.WindowsForms
             menuStrip1.Items.AddRange(new ToolStripItem[] { multaToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(867, 28);
+            menuStrip1.Size = new Size(867, 24);
             menuStrip1.TabIndex = 0;
             menuStrip1.Text = "menuStrip1";
             // 
             // multaToolStripMenuItem
             // 
             multaToolStripMenuItem.Name = "multaToolStripMenuItem";
-            multaToolStripMenuItem.Size = new Size(67, 24);
+            multaToolStripMenuItem.Size = new Size(55, 20);
             multaToolStripMenuItem.Text = "Multas";
             multaToolStripMenuItem.Click += multaToolStripMenuItem_Click;
             // 
@@ -47,6 +47,7 @@ namespace Conti.WindowsForms
             BackColor = SystemColors.ControlDark;
             ClientSize = new Size(867, 451);
             Controls.Add(menuStrip1);
+            IsMdiContainer = true;
             MainMenuStrip = menuStrip1;
             Name = "ParentWindow";
             menuStrip1.ResumeLayout(false);

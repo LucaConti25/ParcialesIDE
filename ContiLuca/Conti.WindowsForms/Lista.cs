@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Conti.API;
 using Conti.DTOs;
 namespace Conti.WindowsForms
@@ -7,15 +8,37 @@ namespace Conti.WindowsForms
         public Lista()
         {
             InitializeComponent();
-            this.CargarTodo();
+            ConfigurarFiltroComboBox();
+
         }
 
-        private async void CargarTodo()
+        private async Task Lista_Load(object sender, EventArgs e)
         {
+            await CargarTodo();
+        }
+
+        private void ConfigurarFiltroComboBox()
+        {
+            if (cmbEstadoFiltro != null)
+            {
+                cmbEstadoFiltro.Items.Clear();
+                cmbEstadoFiltro.Items.Add("Todas");
+                cmbEstadoFiltro.Items.Add("Pendiente");
+                cmbEstadoFiltro.Items.Add("Pagada");
+                cmbEstadoFiltro.SelectedIndex = 0;
+                cmbEstadoFiltro.DropDownStyle = ComboBoxStyle.DropDownList;
+            }
+        }
+        private async Task CargarTodo()
+        {
+            string estadoSeleccionado = cmbEstadoFiltro?.SelectedItem?.ToString() ?? "Todas";
+
+            this.Cursor = Cursors.WaitCursor;
             try
             {
+                var multas = await MultaAPI.GetAllAsync(estadoSeleccionado);
                 this.DGV_Multas.DataSource = null;
-                this.DGV_Multas.DataSource = await MultaAPI.GetAllAsync();
+                this.DGV_Multas.DataSource = multas;
                 if (this.DGV_Multas.Rows.Count > 0)
                 {
                     this.DGV_Multas.Rows[0].Selected = true;
@@ -34,6 +57,15 @@ namespace Conti.WindowsForms
                 this.BTN_Eliminar.Enabled = false;
                 this.BTN_Modificar.Enabled = false;
             }
+            finally
+            {
+                this.Cursor = Cursors.Default;
+            }
+        }
+
+        private async void BTN_Filtrar_Click(object sender, EventArgs e)
+        {
+            await CargarTodo();
         }
 
         private MultaDTO Seleccionado()
@@ -67,6 +99,16 @@ namespace Conti.WindowsForms
             Detalle detalle = new Detalle();
             MultaDTO multa = new MultaDTO();
             var parent = this.MdiParent as ParentWindow;
+            detalle.Mode = Detalle.FormMode.Add;
+            detalle.Multa = multa;
+            detalle.MdiParent = parent;
+            detalle.Dock = DockStyle.None;
+            detalle.StartPosition = FormStartPosition.Manual;
+            detalle.Location = new Point(0, 0);
+            parent.ClientSize = detalle.Size;
+            detalle.Show();
+            this.Close();
         }
+
     }
 }

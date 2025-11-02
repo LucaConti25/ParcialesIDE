@@ -10,28 +10,39 @@ namespace Conti.API
 
         static MultaAPI()
         {
-            client.BaseAddress = new Uri("https://localhost:7272/api/");
+            client.BaseAddress = new Uri("https://localhost:7140/");
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        public async static Task<IEnumerable<MultaDTO>> GetAllAsync()
+        public async static Task<IEnumerable<MultaDTO>> GetAllAsync(string? estado = null)
         {
+            string url = "multas";
+
+            // Si se proporciona un estado (y no es "Todas"), lo agrega a la URL
+            if (!string.IsNullOrEmpty(estado) && !estado.ToLower().Equals("todas", StringComparison.OrdinalIgnoreCase))
+            {
+                // Esto crea una URL como: "multas?estado=Pendiente"
+                url += $"?estado={Uri.EscapeDataString(estado.ToLower())}";
+            }
+
             try
             {
-                HttpResponseMessage response = await client.GetAsync("multas");
+                HttpResponseMessage response = await client.GetAsync(url); // Llama a la URL (con o sin filtro)
+
                 if (response.IsSuccessStatusCode)
                 {
-                    return await response.Content.ReadAsAsync<IEnumerable<MultaDTO>>();
+                    // Usa ReadFromJsonAsync para .NET Core/5+
+                    return await response.Content.ReadFromJsonAsync<IEnumerable<MultaDTO>>();
                 }
                 else
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al obtener lista de usuarioes. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    // Lanza el error 404 (NotFound) u otros
+                    throw new Exception($"Error al obtener lista de multas. Status: {response.StatusCode}, Detalle: {errorContent}");
                 }
             }
-
             catch (HttpRequestException ex)
             {
                 throw new Exception($"Error de conexión al obtener lista de multas: {ex.Message}", ex);
@@ -39,7 +50,7 @@ namespace Conti.API
             catch (TaskCanceledException ex)
             {
                 throw new Exception($"Timeout al obtener lista de multas: {ex.Message}", ex);
-            }
+            } 
         }
 
         public async static Task<MultaDTO> GetAsync(int id)
@@ -127,6 +138,40 @@ namespace Conti.API
             catch (TaskCanceledException ex)
             {
                 throw new Exception($"Timeout al eliminar multa: {ex.Message}", ex);
+            }
+        }
+
+        public static async Task<IEnumerable<MultaDTO>> GetAllByEstadoAsync(string estado)
+        {
+
+            string url = "multas";
+            if (!string.IsNullOrEmpty(estado) && !estado.ToLower().Equals("todas", StringComparison.OrdinalIgnoreCase))
+            {
+                url += $"?estado={Uri.EscapeDataString(estado.ToLower())}";
+            }
+
+            try
+            {
+                HttpResponseMessage response = await client.GetAsync(url);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadAsAsync<IEnumerable<MultaDTO>>();
+                }
+                else
+                {
+                    string errorContent = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"Error al obtener lista de multas. Status: {response.StatusCode}, Detalle: {errorContent}");
+                }
+            }
+
+            catch (HttpRequestException ex)
+            {
+                throw new Exception($"Error de conexión al actualizar multa: {ex.Message}", ex);
+            }
+            catch (TaskCanceledException ex)
+            {
+                throw new Exception($"Timeout al actualizar multa: {ex.Message}", ex);
             }
         }
     }

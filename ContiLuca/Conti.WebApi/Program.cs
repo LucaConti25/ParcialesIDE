@@ -3,6 +3,8 @@ using Conti.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
+using Conti.ModeloDominio;
+using Conti.Data;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -41,15 +43,6 @@ app.MapGet("/multas/{id}", (int id) =>
 .Produces(StatusCodes.Status404NotFound)
 .WithOpenApi();
 
-app.MapGet("/multas", () =>
-{
-    MultaServicios multaServicio = new MultaServicios();
-    IEnumerable<MultaDTO> multas = multaServicio.GetAll();
-    return Results.Ok(multas);
-})
-.WithName("GetAllMultas")
-.Produces<List<MultaDTO>>(StatusCodes.Status200OK)
-.WithOpenApi();
 
 app.MapPost("/multas", (MultaDTO multaDTO) =>
 {
@@ -107,6 +100,33 @@ app.MapDelete("/multas/{id}", (int id) =>
 .WithName("DeleteMulta")
 .Produces(StatusCodes.Status204NoContent)
 .Produces(StatusCodes.Status404NotFound)
+.WithOpenApi();
+
+app.MapGet("/multas", (HttpContext httpContex) =>
+{
+    try
+    {
+        MultaServicios multaServicio = new MultaServicios();    
+        string? estado = httpContex.Request.Query["estado"];
+        IEnumerable<MultaDTO> multas;
+        if (string.IsNullOrEmpty(estado) || estado.Equals("Todas", StringComparison.OrdinalIgnoreCase))
+        {
+            multas = multaServicio.GetAll();
+        }
+        else // Si no, llama al nuevo método de filtrado
+        {
+            multas = multaServicio.GetByEstado(estado);
+        }
+
+        return Results.Ok(multas);
+
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem(ex.Message);
+    }
+}).WithName("GetMultas") 
+.Produces<List<MultaDTO>>(StatusCodes.Status200OK)
 .WithOpenApi();
 
 // ---- FIN RUTAS MULTAS ------

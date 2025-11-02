@@ -32,6 +32,8 @@
             BTN_Agregar = new Button();
             BTN_Modificar = new Button();
             BTN_Eliminar = new Button();
+            cmbEstadoFiltro = new ComboBox();
+            BTN_Filtrar = new Button();
             ((System.ComponentModel.ISupportInitialize)DGV_Multas).BeginInit();
             SuspendLayout();
             // 
@@ -39,19 +41,17 @@
             // 
             DGV_Multas.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             DGV_Multas.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            DGV_Multas.Location = new Point(63, 35);
-            DGV_Multas.Margin = new Padding(3, 4, 3, 4);
+            DGV_Multas.Location = new Point(55, 26);
             DGV_Multas.Name = "DGV_Multas";
             DGV_Multas.RowHeadersWidth = 51;
-            DGV_Multas.Size = new Size(771, 485);
+            DGV_Multas.Size = new Size(675, 364);
             DGV_Multas.TabIndex = 0;
             // 
             // BTN_Agregar
             // 
-            BTN_Agregar.Location = new Point(748, 536);
-            BTN_Agregar.Margin = new Padding(3, 4, 3, 4);
+            BTN_Agregar.Location = new Point(654, 402);
             BTN_Agregar.Name = "BTN_Agregar";
-            BTN_Agregar.Size = new Size(86, 31);
+            BTN_Agregar.Size = new Size(75, 23);
             BTN_Agregar.TabIndex = 1;
             BTN_Agregar.Text = "Agregar";
             BTN_Agregar.UseVisualStyleBackColor = true;
@@ -59,34 +59,54 @@
             // 
             // BTN_Modificar
             // 
-            BTN_Modificar.Location = new Point(643, 536);
-            BTN_Modificar.Margin = new Padding(3, 4, 3, 4);
+            BTN_Modificar.Location = new Point(563, 402);
             BTN_Modificar.Name = "BTN_Modificar";
-            BTN_Modificar.Size = new Size(86, 31);
+            BTN_Modificar.Size = new Size(75, 23);
             BTN_Modificar.TabIndex = 2;
             BTN_Modificar.Text = "Modificar";
             BTN_Modificar.UseVisualStyleBackColor = true;
             // 
             // BTN_Eliminar
             // 
-            BTN_Eliminar.Location = new Point(534, 536);
-            BTN_Eliminar.Margin = new Padding(3, 4, 3, 4);
+            BTN_Eliminar.Location = new Point(467, 402);
             BTN_Eliminar.Name = "BTN_Eliminar";
-            BTN_Eliminar.Size = new Size(86, 31);
+            BTN_Eliminar.Size = new Size(75, 23);
             BTN_Eliminar.TabIndex = 3;
             BTN_Eliminar.Text = "Eliminar";
             BTN_Eliminar.UseVisualStyleBackColor = true;
             BTN_Eliminar.Click += BTN_Eliminar_Click;
             // 
+            // cmbEstadoFiltro
+            // 
+            cmbEstadoFiltro.FormattingEnabled = true;
+            cmbEstadoFiltro.Location = new Point(55, 402);
+            cmbEstadoFiltro.Name = "cmbEstadoFiltro";
+            cmbEstadoFiltro.Size = new Size(121, 23);
+            cmbEstadoFiltro.TabIndex = 4;
+            // 
+            // BTN_Filtrar
+            // 
+            BTN_Filtrar.Location = new Point(182, 402);
+            BTN_Filtrar.Name = "BTN_Filtrar";
+            BTN_Filtrar.Size = new Size(75, 23);
+            BTN_Filtrar.TabIndex = 5;
+            BTN_Filtrar.Text = "Filtrar";
+            BTN_Filtrar.UseVisualStyleBackColor = true;
+            BTN_Filtrar.Click += BTN_Filtrar_Click;
+            // 
             // Lista
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(879, 597);
+            ClientSize = new Size(785, 483);
+            Controls.Add(BTN_Filtrar);
+            Controls.Add(cmbEstadoFiltro);
             Controls.Add(BTN_Eliminar);
             Controls.Add(BTN_Modificar);
             Controls.Add(BTN_Agregar);
             Controls.Add(DGV_Multas);
+            FormBorderStyle = FormBorderStyle.None;
+            Margin = new Padding(3, 2, 3, 2);
             Name = "Lista";
             Text = "MultaLista";
             ((System.ComponentModel.ISupportInitialize)DGV_Multas).EndInit();
@@ -99,5 +119,7 @@
         private Button BTN_Agregar;
         private Button BTN_Modificar;
         private Button BTN_Eliminar;
+        private ComboBox cmbEstadoFiltro;
+        private Button BTN_Filtrar;
     }
 }

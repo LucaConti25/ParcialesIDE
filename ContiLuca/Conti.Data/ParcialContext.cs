@@ -4,10 +4,10 @@ using Microsoft.Extensions.Configuration;
 
 namespace Conti.Data
 {
-    public class TPContext: DbContext
+    public class ParcialContext: DbContext
     {
         public DbSet<Multa> Multas { get; set; }
-        public TPContext()
+        public ParcialContext()
         {
             this.Database.EnsureCreated();
         }

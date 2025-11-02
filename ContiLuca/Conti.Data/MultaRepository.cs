@@ -4,9 +4,9 @@ namespace Conti.Data
 {
     public class MultaRepository
     {
-        private TPContext CreateContext()
+        private ParcialContext CreateContext()
         {
-            return new TPContext();
+            return new ParcialContext();
         }
 
         public void Add(Multa multa)
@@ -55,6 +55,12 @@ namespace Conti.Data
         {
             using var context = CreateContext();
             return context.Multas.ToList();
+        }
+
+        public IEnumerable<Multa> GetByEstado(string estado)
+        {
+            using var context = CreateContext();
+            return context.Multas.Where(m => m.Estado== estado).ToList();
         }
     }
 }
