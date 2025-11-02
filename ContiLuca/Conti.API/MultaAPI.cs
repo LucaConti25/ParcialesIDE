@@ -20,26 +20,22 @@ namespace Conti.API
         {
             string url = "multas";
 
-            // Si se proporciona un estado (y no es "Todas"), lo agrega a la URL
             if (!string.IsNullOrEmpty(estado) && !estado.ToLower().Equals("todas", StringComparison.OrdinalIgnoreCase))
             {
-                // Esto crea una URL como: "multas?estado=Pendiente"
                 url += $"?estado={Uri.EscapeDataString(estado.ToLower())}";
             }
 
             try
             {
-                HttpResponseMessage response = await client.GetAsync(url); // Llama a la URL (con o sin filtro)
+                HttpResponseMessage response = await client.GetAsync(url);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    // Usa ReadFromJsonAsync para .NET Core/5+
                     return await response.Content.ReadFromJsonAsync<IEnumerable<MultaDTO>>();
                 }
                 else
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    // Lanza el error 404 (NotFound) u otros
                     throw new Exception($"Error al obtener lista de multas. Status: {response.StatusCode}, Detalle: {errorContent}");
                 }
             }
@@ -103,7 +99,7 @@ namespace Conti.API
         {
             try
             {
-                HttpResponseMessage response = await client.PutAsJsonAsync($"multas/{multa.ID}", multa);
+                HttpResponseMessage response = await client.PutAsJsonAsync("multas", multa);
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
@@ -172,6 +168,28 @@ namespace Conti.API
             catch (TaskCanceledException ex)
             {
                 throw new Exception($"Timeout al actualizar multa: {ex.Message}", ex);
+            }
+        }
+
+        public async static Task PagarAsync(int id)
+        {
+            try
+            {
+                HttpResponseMessage response = await client.PutAsync($"multas/{id}/pagar", null);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    string errorContent = await response.Content.ReadAsStringAsync();
+                    throw new Exception(errorContent); 
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new Exception($"Error de conexión al pagar multa: {ex.Message}", ex);
+            }
+            catch (TaskCanceledException ex)
+            {
+                throw new Exception($"Timeout al pagar multa: {ex.Message}", ex);
             }
         }
     }

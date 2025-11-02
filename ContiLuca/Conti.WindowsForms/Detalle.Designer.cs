@@ -118,6 +118,7 @@
             BTN_Cancelar.TabIndex = 8;
             BTN_Cancelar.Text = "Cancelar";
             BTN_Cancelar.UseVisualStyleBackColor = true;
+            BTN_Cancelar.Click += BTN_Cancelar_Click;
             // 
             // LBL_id
             // 

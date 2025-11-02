@@ -34,6 +34,7 @@
             BTN_Eliminar = new Button();
             cmbEstadoFiltro = new ComboBox();
             BTN_Filtrar = new Button();
+            BTN_Pagar = new Button();
             ((System.ComponentModel.ISupportInitialize)DGV_Multas).BeginInit();
             SuspendLayout();
             // 
@@ -46,6 +47,7 @@
             DGV_Multas.RowHeadersWidth = 51;
             DGV_Multas.Size = new Size(675, 364);
             DGV_Multas.TabIndex = 0;
+            DGV_Multas.SelectionChanged += DGV_Multas_SelectionChanged;
             // 
             // BTN_Agregar
             // 
@@ -65,6 +67,7 @@
             BTN_Modificar.TabIndex = 2;
             BTN_Modificar.Text = "Modificar";
             BTN_Modificar.UseVisualStyleBackColor = true;
+            BTN_Modificar.Click += BTN_Modificar_Click;
             // 
             // BTN_Eliminar
             // 
@@ -94,11 +97,22 @@
             BTN_Filtrar.UseVisualStyleBackColor = true;
             BTN_Filtrar.Click += BTN_Filtrar_Click;
             // 
+            // BTN_Pagar
+            // 
+            BTN_Pagar.Location = new Point(373, 402);
+            BTN_Pagar.Name = "BTN_Pagar";
+            BTN_Pagar.Size = new Size(75, 23);
+            BTN_Pagar.TabIndex = 6;
+            BTN_Pagar.Text = "Pagar";
+            BTN_Pagar.UseVisualStyleBackColor = true;
+            BTN_Pagar.Click += BTN_Pagar_Click;
+            // 
             // Lista
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(785, 483);
+            Controls.Add(BTN_Pagar);
             Controls.Add(BTN_Filtrar);
             Controls.Add(cmbEstadoFiltro);
             Controls.Add(BTN_Eliminar);
@@ -121,5 +135,6 @@
         private Button BTN_Eliminar;
         private ComboBox cmbEstadoFiltro;
         private Button BTN_Filtrar;
+        private Button BTN_Pagar;
     }
 }

@@ -10,6 +10,9 @@ using Conti.Data;
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
+builder.Services.AddScoped<MultaRepository>();
+builder.Services.AddScoped<MultaServicios>();
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -27,10 +30,9 @@ if (app.Environment.IsDevelopment())
 
 //------- INICIO RUTAS DE MULTAS -------//  
 
-app.MapGet("/multas/{id}", (int id) =>
+app.MapGet("/multas/{id}", async (int id, [FromServices] MultaServicios multaServicio) =>
 {
-    MultaServicios multaServicio = new MultaServicios();
-    MultaDTO multaDTO = multaServicio.GetOne(id);
+    MultaDTO multaDTO = await multaServicio.GetOneAsync(id);
     if (multaDTO == null)
     {
         return Results.NotFound();
@@ -44,12 +46,11 @@ app.MapGet("/multas/{id}", (int id) =>
 .WithOpenApi();
 
 
-app.MapPost("/multas", (MultaDTO multaDTO) =>
+app.MapPost("/multas", async (MultaDTO multaDTO, [FromServices] MultaServicios multaServicio) =>
 {
     try
     {
-        MultaServicios multaServicio = new MultaServicios();
-        MultaDTO nuevaMulta = multaServicio.Add(multaDTO);
+        MultaDTO nuevaMulta = await multaServicio.AddAsync(multaDTO);
         return Results.Created($"/multas/{nuevaMulta.ID}", nuevaMulta);
     }
     catch (Exception ex)
@@ -62,12 +63,11 @@ app.MapPost("/multas", (MultaDTO multaDTO) =>
 .Produces(StatusCodes.Status400BadRequest)
 .WithOpenApi();
 
-app.MapPut("/multas", (MultaDTO multaDTO) =>
+app.MapPut("/multas", async (MultaDTO multaDTO, [FromServices] MultaServicios multaServicio) =>
 {
     try
     {
-        MultaServicios multaServicio = new MultaServicios();
-        bool found = multaServicio.Update(multaDTO);
+        bool found = await multaServicio.UpdateAsync(multaDTO);
         
         if (!found)
         {
@@ -87,10 +87,9 @@ app.MapPut("/multas", (MultaDTO multaDTO) =>
 .Produces(StatusCodes.Status400BadRequest)
 .WithOpenApi();
 
-app.MapDelete("/multas/{id}", (int id) =>
+app.MapDelete("/multas/{id}", async (int id, [FromServices] MultaServicios multaServicio) =>
 {
-    MultaServicios multaServicio = new MultaServicios();
-    bool deleted = multaServicio.Delete(id);
+    bool deleted = await multaServicio.DeleteAsync(id);
     if (!deleted)
     {
         return Results.NotFound();
@@ -102,20 +101,19 @@ app.MapDelete("/multas/{id}", (int id) =>
 .Produces(StatusCodes.Status404NotFound)
 .WithOpenApi();
 
-app.MapGet("/multas", (HttpContext httpContex) =>
+app.MapGet("/multas", async (HttpContext context, [FromServices] MultaServicios multaServicio) =>
 {
     try
     {
-        MultaServicios multaServicio = new MultaServicios();    
-        string? estado = httpContex.Request.Query["estado"];
+        string? estado = context.Request.Query["estado"];
         IEnumerable<MultaDTO> multas;
-        if (string.IsNullOrEmpty(estado) || estado.Equals("Todas", StringComparison.OrdinalIgnoreCase))
+        if (string.IsNullOrEmpty(estado) || estado.ToLower().Equals("todas", StringComparison.OrdinalIgnoreCase))
         {
-            multas = multaServicio.GetAll();
+            multas = await multaServicio.GetAllAsync();
         }
-        else // Si no, llama al nuevo método de filtrado
+        else 
         {
-            multas = multaServicio.GetByEstado(estado);
+            multas = await multaServicio.GetByEstadoAsync(estado);
         }
 
         return Results.Ok(multas);
@@ -127,6 +125,37 @@ app.MapGet("/multas", (HttpContext httpContex) =>
     }
 }).WithName("GetMultas") 
 .Produces<List<MultaDTO>>(StatusCodes.Status200OK)
+.WithOpenApi();
+
+
+app.MapPut("/multas/{id}/pagar", async (int id, [FromServices] MultaServicios servicio) =>
+{
+    try
+    {
+        var resultado = await servicio.PagarAsync(id);
+        if (!resultado)
+        {
+            return Results.NotFound();
+        }
+        return Results.NoContent(); 
+    }
+    catch (KeyNotFoundException ex) 
+    {
+        return Results.NotFound(new { message = ex.Message });
+    }
+    catch (ArgumentException ex) 
+    {
+        return Results.Conflict(new { message = ex.Message });
+    }
+    catch (Exception ex) 
+    {
+        return Results.Problem(ex.Message);
+    }
+})
+.WithName("PagarMulta")
+.Produces(StatusCodes.Status204NoContent)
+.Produces(StatusCodes.Status404NotFound)
+.Produces(StatusCodes.Status409Conflict)
 .WithOpenApi();
 
 // ---- FIN RUTAS MULTAS ------

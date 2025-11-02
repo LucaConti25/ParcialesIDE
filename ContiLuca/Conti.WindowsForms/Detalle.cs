@@ -95,7 +95,7 @@ namespace Conti.WindowsForms
                 errorProvider1.SetError(TXT_Monto, "El monto es obligatorio y debe ser un número válido");
                 isValid = false;
             }
-            else if ( (monto <= 0) || (monto >= 500000))
+            else if ((monto <= 0) || (monto >= 500000))
             {
                 isValid = false;
                 errorProvider1.SetError(TXT_Monto, "El monto no es valido");
@@ -114,7 +114,7 @@ namespace Conti.WindowsForms
         {
             if (this.Validate())
             {
-                try 
+                try
                 {
                     this.Multa.Patente = this.TXT_Patente.Text;
                     this.Multa.Monto = decimal.Parse(this.TXT_Monto.Text);
@@ -130,14 +130,23 @@ namespace Conti.WindowsForms
                     {
                         await MultaAPI.AddAsync(this.Multa);
                     }
+
+                    MessageBox.Show("¡Registro exitoso!", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    abrirPadre();
+
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
 
-                abrirPadre();
+
             }
+        }
+
+        private void BTN_Cancelar_Click(object sender, EventArgs e)
+        {
+            abrirPadre();   
         }
     }
 }

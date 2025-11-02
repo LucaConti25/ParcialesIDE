@@ -1,5 +1,9 @@
 ﻿using System.Diagnostics;
-using Conti.ModeloDominio;  
+using Conti.ModeloDominio;
+using System.Collections.Generic;
+using System.Linq; 
+using System.Threading.Tasks; 
+using Microsoft.EntityFrameworkCore;
 namespace Conti.Data
 {
     public class MultaRepository
@@ -9,33 +13,33 @@ namespace Conti.Data
             return new ParcialContext();
         }
 
-        public void Add(Multa multa)
+        public async Task AddAsync(Multa multa)
         {
-            using var context = CreateContext();
+            await using var context = CreateContext();
             context.Multas.Add(multa);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
 
-        public bool Delete(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            using var context = CreateContext();
-            var multa = context.Multas.Find(id);
+            await using var context = CreateContext();
+            var multa = await context.Multas.FindAsync(id);
             if (multa == null)
             {
                 return false;
             }
             context.Multas.Remove(multa);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
             return true;
         }
 
-        public Multa? GetOne(int id)
+        public async Task<Multa?> GetOneAsync(int id)
         {
-            using var context = CreateContext();
-            return context.Multas.FirstOrDefault(m => m.ID == id);
+            await using var context = CreateContext();
+            return await context.Multas.FirstOrDefaultAsync(m => m.ID == id);
         }   
 
-        public bool Update(Multa multa)
+        public async Task<bool> UpdateAsync(Multa multa)
         {
             using var context = CreateContext();
             var existingMulta = context.Multas.Find(multa.ID);
@@ -47,20 +51,21 @@ namespace Conti.Data
             existingMulta.SetMonto(multa.Monto);
             existingMulta.SetFecha(multa.Fecha);
             existingMulta.SetEstado(multa.Estado);
-            context.SaveChanges();
+            existingMulta.SetTipo(multa.Tipo);
+            await context.SaveChangesAsync();
             return true;
         }
 
-        public IEnumerable<Multa> GetAll()
+        public async  Task<IEnumerable<Multa>> GetAllAsync()
         {
-            using var context = CreateContext();
-            return context.Multas.ToList();
+            await using var context = CreateContext();
+            return await context.Multas.ToListAsync();
         }
 
-        public IEnumerable<Multa> GetByEstado(string estado)
+        public async Task<IEnumerable<Multa>> GetByEstadoAsync(string estado)
         {
-            using var context = CreateContext();
-            return context.Multas.Where(m => m.Estado== estado).ToList();
+            await using var context = CreateContext();
+            return await context.Multas.Where(m => m.Estado== estado).ToListAsync();
         }
     }
 }
